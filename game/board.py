@@ -59,4 +59,24 @@ def place_tetromino(board, tetromino, row, col):
   return board
 
 
+def line_clear(board):
+  #Removes lines that have been completed across
+  #Returns updated board and lines cleared in placement
+
+  incomplete_rows = []
+
+  for row in board:
+    if not np.all(row != 0):
+      incomplete_rows.append(row)
+
+  rows_cleared = ROWS - len(incomplete_rows)
+  empty_rows = np.zeros((rows_cleared, COLS), dtype=int)
+
+  if rows_cleared > 0:
+    board = np.vstack((empty_rows, incomplete_rows))
+
+  return board, rows_cleared
+  
+
+
   
