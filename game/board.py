@@ -39,4 +39,24 @@ def is_valid(board, tetromino, row, col):
           return False
 
   return True
+
+def place_tetromino(board, tetromino, row, col):
+  #place tetromino in an assumed valid position
+
+  tetromino_rows, tetromino_cols = tetromino.shape
+
+  for r in range(tetromino_rows):
+    for c in range(tetromino_cols):
+
+      if tetromino[r, c] != 0:
+
+        board_row = row + r
+        board_col = col + c
+
+        if board_row >= 0:
+          board[board_row, board_col = tetromino[r, c]
+
+  return board
+
+
   
