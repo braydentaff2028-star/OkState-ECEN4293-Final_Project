@@ -54,7 +54,7 @@ def place_tetromino(board, tetromino, row, col):
         board_col = col + c
 
         if board_row >= 0:
-          board[board_row, board_col = tetromino[r, c]
+          board[board_row, board_col = tetromino[r, c]]
 
   return board
 
