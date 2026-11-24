@@ -47,6 +47,7 @@ TETROMINOS = {
     [0, 7],
     [7, 7]
   ])
+}
 
 class Tetromino:
   def __init__(self, tetromino_id):
