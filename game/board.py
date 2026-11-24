@@ -76,6 +76,13 @@ def line_clear(board):
     board = np.vstack((empty_rows, incomplete_rows))
 
   return board, rows_cleared
+
+
+def game_over(board):
+  #checks top row cells for tetromino
+  return np.any(board[0] != 0)
+
+
   
 
 
