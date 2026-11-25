@@ -162,7 +162,7 @@ def test_upcoming_to_active():
 
 def test_upcoming_is_selected():
   game = TetrisGame()
-  moneypatch.setattr("game.game_engine.random.choice", lambda options: 2)
+  monkeypatch.setattr("game.game_engine.random.choice", lambda options: 2)
 
   game.spawn_tetromino()
 
