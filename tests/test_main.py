@@ -50,7 +50,7 @@ def test_x_key():
   game = TetrisGame()
   game.active_tetromino = Tetromino(3)
 
-  original_shape = game.active_tetromino.shape()
+  original_shape = game.active_tetromino.shape
 
   fig, ax = plt.subplots()
   event = SimpleNamespace(key = "x")
@@ -66,7 +66,7 @@ def test_z_key():
   game = TetrisGame()
   game.active_tetromino = Tetromino(3)
 
-  original_shape = game.active_tetromino.shape()
+  original_shape = game.active_tetromino.shape
 
   fig, ax = plt.subplots()
   event = SimpleNamespace(key = "z")
