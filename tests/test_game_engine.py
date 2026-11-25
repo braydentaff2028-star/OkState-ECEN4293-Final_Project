@@ -83,3 +83,28 @@ def test_lock_tetromino():
   assert np.all(game.board[18, 3:7] == 1)
   assert game.total_lines_cleared == 0
 
+
+def test_hard_drop_to_bottom():
+  game = TetrisGame()
+  game.active_tetromino = Tetromino(1)
+  game.current_row = 0
+  game.current_col = 3
+
+  game.hard_drop()
+
+  assert np.all(game.board[19, 3:7] == 1)
+
+
+def test_hard_drop_to_obstacle():
+  game = TetrisGame()
+  game.active_tetromino = Tetromino(1)
+  game.current_row = 0
+  game.current_col = 3
+
+  game.board[18, 3] = 9
+
+  game.hard_drop()
+
+  assert np.all(game.board[17, 3:7] == 1)
+  assert game.board[18, 3] == 9
+
