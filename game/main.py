@@ -78,57 +78,85 @@ def launch_game(mode, strategy):
   plt.show()
 
 
+
 def main():
-  menu_fig = plt.figure(figsize=(8, 6))
-  menu_fig.suptitle("TETRIS", fontsize=24, fontweight="bold")
+    menu_fig = plt.figure(figsize=(8, 6))
+    menu_fig.suptitle("TETRIS", fontsize=24, fontweight="bold")
 
-  # Game mode selection
-  mode_ax = menu_fig.add_axes([0.15, 0.45, 0.3, 0.3])
-  mode_ax.set_title("GAME MODE")
+    # Game mode selection
+    mode_ax = menu_fig.add_axes([0.3, 0.4, 0.4, 0.3])
+    mode_ax.set_title("SELECT GAME MODE")
 
-  mode_buttons = RadioButtons(
-    mode_ax,
-    ("Human", "Automated")
-  )
-
-  # AI strategy selection
-  strategy_ax = menu_fig.add_axes([0.55, 0.35, 0.4, 0.45])
-  strategy_ax.set_title("AI STRATEGY")
-
-  strategy_buttons = RadioButtons(
-    strategy_ax,
-    (
-      "Random",
-      "Minimize Holes",
-      "Minimize Height",
-      "Combined Optimization"
+    mode_buttons = RadioButtons(
+        mode_ax,
+        ("Human", "Automated")
     )
-  )
 
-  # Start button
-  button_ax = menu_fig.add_axes([0.35, 0.12, 0.3, 0.1])
+    # Continue button
+    continue_ax = menu_fig.add_axes([0.35, 0.15, 0.3, 0.1])
 
-  start_button = Button(
-    button_ax,
-    "START GAME"
-  )
+    continue_button = Button(
+        continue_ax,
+        "CONTINUE"
+    )
 
-  def start_game(event):
-    selected_mode = mode_buttons.value_selected
-    selected_strategy = strategy_buttons.value_selected
+    def select_mode(event):
+        selected_mode = mode_buttons.value_selected
 
-    if selected_mode == "Human":
-      mode = "human"
-    else:
-      mode = "automated"
+        # Human mode starts immediately
+        if selected_mode == "Human":
+            plt.close(menu_fig)
+            launch_game("human", "Random")
+            return
 
-    plt.close(menu_fig)
+        # Remove the first menu
+        mode_ax.remove()
+        continue_ax.remove()
 
-    launch_game(mode, selected_strategy)
+        # Display AI strategy selection
+        strategy_ax = menu_fig.add_axes([0.25, 0.3, 0.5, 0.5])
+        strategy_ax.set_title("SELECT AI STRATEGY")
 
-  start_button.on_clicked(start_game)
+        strategy_buttons = RadioButtons(
+            strategy_ax,
+            (
+                "Random",
+                "Minimize Holes",
+                "Minimize Height",
+                "Combined Optimization"
+            )
+        )
 
-  plt.show()
+        # Start game button
+        start_ax = menu_fig.add_axes([0.35, 0.12, 0.3, 0.1])
+
+        start_button = Button(
+            start_ax,
+            "START GAME"
+        )
+
+        def start_automated_game(start_event):
+            selected_strategy = strategy_buttons.value_selected
+
+            plt.close(menu_fig)
+
+            launch_game("automated", selected_strategy)
+
+        start_button.on_clicked(start_automated_game)
+
+        # Keep widget references alive
+        menu_fig.strategy_buttons = strategy_buttons
+        menu_fig.start_button = start_button
+
+        menu_fig.canvas.draw_idle()
+
+    continue_button.on_clicked(select_mode)
+
+    # Keep widget references alive
+    menu_fig.mode_buttons = mode_buttons
+    menu_fig.continue_button = continue_button
+
+    plt.show()
 
 
 if __name__ == "__main__":
