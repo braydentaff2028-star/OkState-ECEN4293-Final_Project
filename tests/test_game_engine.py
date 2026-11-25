@@ -108,3 +108,41 @@ def test_hard_drop_to_obstacle():
   assert np.all(game.board[17, 3:7] == 1)
   assert game.board[18, 3] == 9
 
+
+def test_initial_score():
+  game = TetrisGame()
+  assert game.score == 0
+
+
+def test_single_line_score():
+  game = TetrisGame()
+  game.update_score(1)
+  assert game.score == 100
+
+
+def test_double_line_score():
+  game = TetrisGame()
+  game.update_score(2)
+  assert game.score == 300
+
+
+def test_triple_line_score():
+  game = TetrisGame()
+  game.update_score(3)
+  assert game.score == 500
+
+
+def test_quad_line_score():
+  game = TetrisGame()
+  game.update_score(4)
+  assert game.score == 800
+
+
+def test_score_accumulates():
+  game = TetrisGame()
+  game.update_score(1)
+  game.update_score(2)
+  game.update_score(3)
+  game.update_score(4)
+  assert game.score == 1700
+
