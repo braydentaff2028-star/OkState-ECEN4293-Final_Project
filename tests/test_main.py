@@ -3,7 +3,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 from types import SimpleNamespace
-from game.main import handle_keypress
+from game.main import handle_keypress, update_game
 from game.game_engine import TetrisGame
 from game.tetrominos import Tetromino
 
@@ -87,7 +87,36 @@ def test_hard_drop():
   fig, ax = plt.subplots()
   event = SimpleNamespace(key=" ")
 
+
+
+
   handle_keypress(event, game, ax)
   assert np.all(game.board[19, 3:7] == 1)
   plt.close(fig)
   
+def test_auto_fall():
+  game = TetrisGame()
+  game.active_tetromino = Tetromino(1)
+  game.current_row = 0
+
+  fig, ax = plt.subplots()
+
+  update_game(game, ax)
+
+  assert game.current_row == 1
+  plt.close(fig)
+
+
+def test_auto_fall_after_game_over():
+  game = TetrisGame()
+  game.active_tetromino = Tetromino(1)
+  game.current_row = 0
+  game.is_game_over = True
+
+  fig, ax = plt.subplots()
+
+  update_game(game, ax)
+
+  assert game.current_row == 0
+  plt.close(fig)
+
