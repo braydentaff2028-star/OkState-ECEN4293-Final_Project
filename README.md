@@ -128,12 +128,12 @@ Since these measurements use different numerical ranges, both are normalized bef
 
 The combined evaluation function is:
 
-\[
+$$
 S =
 w_h\left(\frac{H}{200}\right)
 +
 w_b\left(\frac{B}{20}\right)
-\]
+$$
 
 Where:
 
