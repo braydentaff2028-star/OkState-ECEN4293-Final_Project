@@ -146,3 +146,25 @@ def test_score_accumulates():
   game.update_score(4)
   assert game.score == 1700
 
+
+def test_upcoming_tetromino():
+  game = TetrisGame()
+  assert game.upcoming_tetromino is not None
+  assert game.active_tetromino is not None
+
+
+def test_upcoming_to_active():
+  game = TetrisGame()
+  upcoming = game.upcoming_tetromino
+  game.spawn_tetromino()
+  assert game.active_tetromino is upcoming
+
+
+def test_upcoming_is_selected():
+  game = TetrisGame()
+  moneypatch.setattr("game.game_engine.random.choice", lambda options: 2)
+
+  game.spawn_tetromino()
+
+  assert game.upcoming_tetromino.tetromino_id == 2
+
