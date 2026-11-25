@@ -89,6 +89,5 @@ def draw_game(game, ax=None):
 
   ax.set_aspect("equal")
 
-  fig.tight_layout()
   draw_next_tetromino(game, preview_ax)
   return fig, ax
