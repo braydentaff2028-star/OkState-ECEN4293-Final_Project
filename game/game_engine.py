@@ -9,6 +9,7 @@ class TetrisGame:
 
     #track current game state
     self.total_lines_cleared = 0
+    self.score = 0
     self.is_game_over = False
 
     #create the first tetromino
@@ -66,6 +67,7 @@ class TetrisGame:
 
     self.board, lines_cleared = line_clear(self.board)
     self.total_lines_cleared += lines_cleared
+    self.update_score(lines_cleared)
 
     self.spawn_tetromino()
 
@@ -74,3 +76,14 @@ class TetrisGame:
     while is_valid(self.board, self.active_tetromino.shape, self.current_row + 1, self.current_col):
       self.current_row += 1
     self.lock_tetromino()
+
+
+  def update_score(self, lines_cleared):
+    if lines_cleared == 1:
+      self.score += 100
+    elif lines_cleared == 2:
+      self.score += 300
+    elif lines_cleared == 3:
+      self.score += 500
+    elif lines_cleared == 4:
+      self.score += 800
