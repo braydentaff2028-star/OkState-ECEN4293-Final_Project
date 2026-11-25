@@ -39,7 +39,7 @@ class TetrisGame:
 
 
   def move_down(self):
-    if is_valid(self.board, self.active_tetromino.shape, self.current_row + 1, self.current_col - 1):
+    if is_valid(self.board, self.active_tetromino.shape, self.current_row + 1, self.current_col):
       self.current_row += 1
     else:
       self.lock_tetromino()
