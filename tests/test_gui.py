@@ -49,10 +49,12 @@ def test_draw_game_doesnt_modify_board():
 def test_game_over_display():
   game = TetrisGame()
   game.is_game_over = True
+  game.score = 1800
 
   fig, ax = draw_game(game)
 
-  assert ax.get_title() == "GAME OVER"
+  assert ax.get_title() == "GAME OVER\nScore: 1800"
+
   plt.close(fig)
 
 
@@ -66,15 +68,4 @@ def test_score_display():
 
   plt.close(fig)
 
-
-def test_game_over_shows_score():
-  game = TetrisGame()
-  game.is_game_over = True
-  game.score = 1800
-
-  fig, ax = draw_game(game)
-
-  assert ax.get_title() == "GAME OVER\nScore: 1800"
-
-  plt.close(fig)
   
