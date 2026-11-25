@@ -22,13 +22,16 @@ def handle_keypress(event, game, ax):
   ax.figure.canvas.draw_idle()
 
 
-def update_game(game, ax):
+def update_game(game, ax, animation = None):
   if game.is_game_over:
     return
 
   game.move_down()
   draw_game(game, ax)
   ax.figure.canvas.draw_idle()
+
+  if animation is not None:
+        animation.event_source.interval = game.drop_interval
 
 
 def main():
@@ -37,8 +40,8 @@ def main():
   fig.canvas.mpl_connect("key_press_event", lambda event: handle_keypress(event, game, ax))
   animation = FuncAnimation(
     fig,
-    lambda frame: update_game(game, ax),
-    interval=500
+    lambda frame: update_game(game, ax, animation),
+    interval=game.drop_interval
   )
   plt.show()
 
