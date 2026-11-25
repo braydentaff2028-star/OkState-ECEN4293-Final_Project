@@ -41,7 +41,7 @@ def draw_game(game, ax=None):
         preview_ax = fig._preview_ax
     else:
         preview_ax = fig.add_axes([0.75, 0.7, 0.2, 0.2])
-        fig._preview_ax = preview_ax
+        fig.preview_ax = preview_ax
 
   display_board = game.board.copy()
 
