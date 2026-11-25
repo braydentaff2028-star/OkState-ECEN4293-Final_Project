@@ -3,7 +3,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 from types import SimpleNamespace
-from game.main import handle_keypress, update_game, AI_STRATEGIES
+from game.main import handle_keypress, update_game, AI_STRATEGIES, AI_PLACEMENT_STRATEGUES
 from game.game_engine import TetrisGame
 from game.tetrominos import Tetromino
 
@@ -165,8 +165,14 @@ def test_automated_mode_calls_selected_strategy(monkeypatch):
     def fake_strategy(game):
         strategy_called.append(True)
 
+        return {
+            "rotation": game.active_tetromino.shape,
+            "row": 1,
+            "col": 0
+        }
+
     monkeypatch.setitem(
-        AI_STRATEGIES,
+        AI_PLACEMENT_STRATEGIES,
         "Minimize Holes",
         fake_strategy
     )
@@ -179,6 +185,7 @@ def test_automated_mode_calls_selected_strategy(monkeypatch):
     )
 
     assert strategy_called == [True]
+    assert game.current_row == 1
 
     plt.close(fig)
 
