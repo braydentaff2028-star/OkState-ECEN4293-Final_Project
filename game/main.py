@@ -36,7 +36,7 @@ def handle_keypress(event, game, ax, mode="human"):
   ax.figure.canvas.draw_idle()
 
 
-def update_game(game, ax, animation = None, mode="human", strategy="Random"):
+def update_game(game, ax, animation=None, mode="human", strategy="Random", menu_button=None):
   if game.is_game_over:
     return
 
