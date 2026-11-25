@@ -10,6 +10,8 @@ class TetrisGame:
     #track current game state
     self.total_lines_cleared = 0
     self.score = 0
+    self.level = 1
+    self.drop_interval = 500
     self.is_game_over = False
 
     self.upcoming_tetromino = Tetromino(random.choice(list(TETROMINOS.keys())))
@@ -71,6 +73,7 @@ class TetrisGame:
     self.board, lines_cleared = line_clear(self.board)
     self.total_lines_cleared += lines_cleared
     self.update_score(lines_cleared)
+    self.update_level()
 
     self.spawn_tetromino()
 
@@ -90,3 +93,12 @@ class TetrisGame:
       self.score += 500
     elif lines_cleared == 4:
       self.score += 800
+
+
+  def update_level(self):
+    new_level = (self.total_lines_cleared // 10) + 1
+
+    if new_level > self.level:
+      self.level = new_level
+
+      self.drop_interval = max(500 - (self.level - 1) * 50, 100)
