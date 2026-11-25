@@ -2,10 +2,11 @@
 import matplotlib.pyplot as plt
 from matplotlib.widgets import RadioButtons, Button
 from game.GUI import draw_game
-from game.automation import (play_random_move, play_hole_minimization_move, play_height_minimization_move, play_combined_move)
+from game.automation import (play_random_move, play_hole_minimization_move, play_height_minimization_move, play_combined_move, get_random_placement, get_best_hole_placement, get_best_height_placement, get_best_combined_placement)
 from matplotlib.animation import FuncAnimation
 from game.game_engine import TetrisGame
 from game.GUI import draw_game
+from game.board import is_valid
 
 
 AI_STRATEGIES = {
@@ -13,6 +14,13 @@ AI_STRATEGIES = {
     "Minimize Holes": play_hole_minimization_move,
     "Minimize Height": play_height_minimization_move,
     "Combined Optimization": play_combined_move
+}
+
+AI_PLACEMENT_STRATEGIES = {
+    "Random": get_random_placement,
+    "Minimize Holes": get_best_hole_placement,
+    "Minimize Height": get_best_height_placement,
+    "Combined Optimization": get_best_combined_placement
 }
 
 def handle_keypress(event, game, ax, mode="human"):
@@ -36,40 +44,85 @@ def handle_keypress(event, game, ax, mode="human"):
   ax.figure.canvas.draw_idle()
 
 
-def update_game(game, ax, animation=None, mode="human", strategy="Random", menu_button=None):
-  if game.is_game_over:
-    if menu_button is not None:
-        menu_button.ax.set_visible(True)
+def update_game(
+    game,
+    ax,
+    animation=None,
+    mode="human",
+    strategy="Random",
+    menu_button=None,
+    ai_state=None
+):
+    if ai_state is None:
+        ai_state = {"placement": None}
+
+    if game.is_game_over:
+        if menu_button is not None:
+            menu_button.ax.set_visible(True)
+
+        if animation is not None:
+            animation.event_source.stop()
+
+        ax.figure.canvas.draw_idle()
+        return
+
+    if mode == "automated":
+
+        # Select a destination if one has not been selected yet
+        if ai_state["placement"] is None:
+            ai_state["placement"] = AI_PLACEMENT_STRATEGIES[strategy](game)
+
+            if ai_state["placement"] is None:
+                game.is_game_over = True
+
+            else:
+                game.active_tetromino.shape = ai_state["placement"]["rotation"]
+                game.current_row = 0
+                game.current_col = ai_state["placement"]["col"]
+
+        # Move the tetromino down one row per update
+        if not game.is_game_over:
+            target_row = ai_state["placement"]["row"]
+
+            if game.current_row < target_row:
+                if is_valid(
+                    game.board,
+                    game.active_tetromino.shape,
+                    game.current_row + 1,
+                    game.current_col
+                ):
+                    game.current_row += 1
+                else:
+                    game.lock_tetromino()
+                    ai_state["placement"] = None
+
+            else:
+                game.lock_tetromino()
+                ai_state["placement"] = None
+
+    else:
+        game.move_down()
+
+    draw_game(game, ax)
+    ax.figure.canvas.draw_idle()
+
+    if game.is_game_over:
+        if menu_button is not None:
+            menu_button.ax.set_visible(True)
+
+        if animation is not None:
+            animation.event_source.stop()
+
+        ax.figure.canvas.draw_idle()
+        return
 
     if animation is not None:
-        animation.event_source.stop()
-
-    ax.figure.canvas.draw_idle()
-    return
-
-  if mode == "automated":
-    AI_STRATEGIES[strategy](game)
-  else:
-    game.move_down()
-  draw_game(game, ax)
-  ax.figure.canvas.draw_idle()
-    
-  if game.is_game_over:
-    if menu_button is not None:
-        menu_button.ax.set_visible(True)
-
-    if animation is not None:
-        animation.event_source.stop()
-
-    ax.figure.canvas.draw_idle()
-    return
-
-  if animation is not None:
         animation.event_source.interval = game.drop_interval
 
 
 def launch_game(mode, strategy):
   game = TetrisGame()
+  ai_state = {"placement": None}
 
   fig, ax = draw_game(game)
   menu_ax = fig.add_axes([0.35, 0.02, 0.3, 0.06])
@@ -102,7 +155,8 @@ def launch_game(mode, strategy):
       animation,
       mode,
       strategy,
-      menu_button
+      menu_button,
+      ai_state
     ),
     interval=game.drop_interval
   )
