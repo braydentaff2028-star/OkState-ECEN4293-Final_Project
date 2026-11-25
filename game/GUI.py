@@ -30,6 +30,15 @@ def draw_next_tetromino(game, ax):
 
   ax.set_aspect("equal")
 
+  ax.text(
+    0.5, -0.35,
+    f"LEVEL {game.level}",
+    transform=ax.transAxes,
+    fontsize=16,
+    fontweight="bold",
+    ha="center"
+)
+
 
 def draw_game(game, ax=None):
   if ax is None:
