@@ -3,7 +3,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 from types import SimpleNamespace
-from game.main import handle_keypress, update_game
+from game.main import handle_keypress, update_game, AI_STRATEGIES
 from game.game_engine import TetrisGame
 from game.tetrominos import Tetromino
 
@@ -134,5 +134,100 @@ def test_update_game_updates_animation_interval():
     update_game(game, ax, animation)
 
     assert animation.event_source.interval == 450
+
+    plt.close(fig)
+
+
+
+def test_automated_mode_ignores_keyboard_input():
+    game = TetrisGame()
+    game.active_tetromino = Tetromino(1)
+    game.current_col = 4
+
+    fig, ax = plt.subplots()
+    event = SimpleNamespace(key="left")
+
+    handle_keypress(event, game, ax, mode="automated")
+
+    assert game.current_col == 4
+
+    plt.close(fig)
+
+
+def test_automated_mode_calls_selected_strategy(monkeypatch):
+    game = TetrisGame()
+    game.active_tetromino = Tetromino(1)
+
+    fig, ax = plt.subplots()
+
+    strategy_called = []
+
+    def fake_strategy(game):
+        strategy_called.append(True)
+
+    monkeypatch.setitem(
+        AI_STRATEGIES,
+        "Minimize Holes",
+        fake_strategy
+    )
+
+    update_game(
+        game,
+        ax,
+        mode="automated",
+        strategy="Minimize Holes"
+    )
+
+    assert strategy_called == [True]
+
+    plt.close(fig)
+
+
+def test_back_to_menu_button_appears_on_game_over():
+    game = TetrisGame()
+    game.is_game_over = True
+
+    fig, ax = plt.subplots()
+
+    visibility = []
+
+    menu_button = SimpleNamespace(
+        ax=SimpleNamespace(
+            set_visible=lambda visible: visibility.append(visible)
+        )
+    )
+
+    update_game(
+        game,
+        ax,
+        menu_button=menu_button
+    )
+
+    assert visibility == [True]
+
+    plt.close(fig)
+
+
+def test_animation_stops_on_game_over():
+    game = TetrisGame()
+    game.is_game_over = True
+
+    fig, ax = plt.subplots()
+
+    animation_stopped = []
+
+    animation = SimpleNamespace(
+        event_source=SimpleNamespace(
+            stop=lambda: animation_stopped.append(True)
+        )
+    )
+
+    update_game(
+        game,
+        ax,
+        animation=animation
+    )
+
+    assert animation_stopped == [True]
 
     plt.close(fig)
