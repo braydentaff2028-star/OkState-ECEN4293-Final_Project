@@ -44,4 +44,14 @@ def test_draw_game_doesnt_modify_board():
 
   assert np.array_equal(game.board, original_board)
   plt.close(fig)
+
+
+def test_game_over_display():
+  game = TetrisGame()
+  game.is_game_over = True
+
+  fig, ax = draw_game(game)
+
+  assert ax.get_title() == "GAME OVER"
+  plt.close(fig)
   
