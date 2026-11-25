@@ -34,14 +34,14 @@ def draw_next_tetromino(game, ax):
 def draw_game(game, ax=None):
   if ax is None:
     fig, (ax, preview_ax) = plt.subplots(1, 2, figsize=(8, 10), gridspec_kw={"width_ratios": [3, 1]})
-    fig.preview_ax = preview_ax
+    fig._preview_ax = preview_ax
   else:
     fig = ax.figure
     if hasattr(fig, "_preview_ax"):
         preview_ax = fig._preview_ax
     else:
         preview_ax = fig.add_axes([0.75, 0.7, 0.2, 0.2])
-        fig.preview_ax = preview_ax
+        fig._preview_ax = preview_ax
 
   display_board = game.board.copy()
 
