@@ -72,7 +72,7 @@ def launch_game(mode, strategy):
   game = TetrisGame()
 
   fig, ax = draw_game(game)
-  menu_ax = fig.add_axes([0.72, 0.08, 0.22, 0.07])
+  menu_ax = fig.add_axes([0.35, 0.02, 0.3, 0.06])
 
   menu_button = Button(
     menu_ax,
