@@ -54,4 +54,27 @@ def test_game_over_display():
 
   assert ax.get_title() == "GAME OVER"
   plt.close(fig)
+
+
+def test_score_display():
+  game = TetrisGame()
+  game.score = 1200
+  game.total_lines_cleared = 6
+
+  fig, ax = draw_game(game)
+  assert ax.get_title() == "Score: 1200 | Lines Cleared: 6"
+
+  plt.close(fig)
+
+
+def test_game_over_shows_score():
+  game = TetrisGame()
+  game.is_game_over = True
+  game.score = 1800
+
+  fig, ax = draw_game(game)
+
+  assert ax.get_title() == "GAME OVER\nScore: 1800"
+
+  plt.close(fig)
   
