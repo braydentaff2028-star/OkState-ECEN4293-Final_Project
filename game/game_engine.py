@@ -34,13 +34,13 @@ class TetrisGame:
 
 
   def move_right(self):
-    if is_valid(self.board, self.active_tetromino.shape, self.current_row + 1, self.current_col):
-      self.current_row += 1
+    if is_valid(self.board, self.active_tetromino.shape, self.current_row, self.current_col + 1):
+      self.current_col += 1
 
 
   def move_down(self):
-    if is_valid(self.board, self.active_tetromino.shape, self.current_row, self.current_col - 1):
-      self.current_col -= 1
+    if is_valid(self.board, self.active_tetromino.shape, self.current_row + 1, self.current_col - 1):
+      self.current_row += 1
     else:
       self.lock_tetromino()
 
@@ -61,7 +61,7 @@ class TetrisGame:
       self.active_tetromino.shape = original_shape
 
 
-  def lock_tetrominos(self):
+  def lock_tetromino(self):
     place_tetromino(self.board, self.active_tetromino.shape, self.current_row, self.current_col)
 
     self.board, lines_cleared = line_clear(self.board)
