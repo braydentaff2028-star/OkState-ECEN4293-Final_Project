@@ -19,7 +19,7 @@ def draw_next_tetromino(game, ax):
 
   tetromino = game.upcoming_tetromino.shape
 
-  color_map = ListedColormap(TETROMINOS_COLORS)
+  color_map = ListedColormap(TETROMINO_COLORS)
 
   ax.imshow(tetromino, cmap=color_map, vmin=0, vmax=7)
 
@@ -37,7 +37,7 @@ def draw_game(game, ax=None):
     fig.preview_ax = preview_ax
   else:
     fig = ax.figure
-    preview_ax = fig._preview_ax
+    fig._preview_ax = preview_ax
 
   display_board = game.board.copy()
 
