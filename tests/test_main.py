@@ -3,7 +3,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 from types import SimpleNamespace
-from game.main import handle_keypress, update_game, AI_STRATEGIES, AI_PLACEMENT_STRATEGUES
+from game.main import handle_keypress, update_game, AI_STRATEGIES, AI_PLACEMENT_STRATEGIES
 from game.game_engine import TetrisGame
 from game.tetrominos import Tetromino
 
