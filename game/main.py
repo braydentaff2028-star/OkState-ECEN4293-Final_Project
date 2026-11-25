@@ -1,5 +1,6 @@
 #Main for Tetris Game
 import matplotlib.pyplot as plt
+from matplotlib.animation import FuncAnimation
 from game.game_engine import TetrisGame
 from game.GUI import draw_game
 
@@ -21,10 +22,24 @@ def handle_keypress(event, game, ax):
   ax.figure.canvas.draw_idle()
 
 
+def update_game(game, ax):
+  if game.is_game_over:
+    return
+
+  game.move_down()
+  draw_game(game, ax)
+  ax.figure.canvas.draw_idle()
+
+
 def main():
   game = TetrisGame()
   fig, ax = draw_game(game)
   fig.canvas.mpl_connect("key_press_event", lambda event: handle_keypress(event, game, ax))
+  animation = FuncAnimation(
+    fig,
+    lambda frame: update_game(game, ax),
+    interval=500
+  )
   plt.show()
 
 
