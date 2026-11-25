@@ -168,3 +168,50 @@ def test_upcoming_is_selected(monkeypatch):
 
   assert game.upcoming_tetromino.tetromino_id == 2
 
+
+def test_initial_level():
+    game = TetrisGame()
+
+    assert game.level == 1
+    assert game.drop_interval == 500
+
+
+def test_level_two():
+    game = TetrisGame()
+    game.total_lines_cleared = 10
+
+    game.update_level()
+
+    assert game.level == 2
+    assert game.drop_interval == 450
+
+
+def test_level_three():
+    game = TetrisGame()
+    game.total_lines_cleared = 20
+
+    game.update_level()
+
+    assert game.level == 3
+    assert game.drop_interval == 400
+
+
+def test_maximum_drop_speed():
+    game = TetrisGame()
+    game.total_lines_cleared = 80
+
+    game.update_level()
+
+    assert game.level == 9
+    assert game.drop_interval == 100
+
+
+def test_drop_speed_does_not_exceed_maximum():
+    game = TetrisGame()
+    game.total_lines_cleared = 100
+
+    game.update_level()
+
+    assert game.level == 11
+    assert game.drop_interval == 100
+
