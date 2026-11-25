@@ -55,6 +55,22 @@ def launch_game(mode, strategy):
   game = TetrisGame()
 
   fig, ax = draw_game(game)
+  menu_ax = fig.add_axes([0.72, 0.08, 0.22, 0.07])
+
+  menu_button = Button(
+    menu_ax,
+    "BACK TO MENU"
+  )
+
+  menu_ax.set_visible(False)
+
+  def back_to_menu(event):
+    plt.close(fig)
+    main()
+
+  menu_button.on_clicked(back_to_menu)
+
+  fig.menu_button = menu_button
 
   fig.canvas.mpl_connect(
     "key_press_event",
