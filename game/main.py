@@ -79,7 +79,6 @@ def launch_game(mode, strategy):
 
 
 def main():
-  def main():
   menu_fig = plt.figure(figsize=(8, 6))
   menu_fig.suptitle("TETRIS", fontsize=24, fontweight="bold")
 
