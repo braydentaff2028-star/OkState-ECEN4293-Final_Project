@@ -1,11 +1,13 @@
 #Simulation Runner
 import csv
+import random
 import os
 from game.game_engine import TetrisGame
 from game.automation import (play_random_move, play_hole_minimization_move, play_height_minimization_move, play_combined_move, calculate_board_height, count_holes)
 
 # Number of games per configuration
 GAMES_PER_CONFIGURATION = 1000
+RANDOM_SEED = 42
 
 # All simulation configurations
 CONFIGURATIONS = [
@@ -57,6 +59,7 @@ def run_game(configuration):
 
 
 def run_simulations():
+    random.seed(RANDOM_SEED)
     results_folder = os.path.join("experiments", "results")
     os.makedirs(results_folder, exist_ok=True)
 
