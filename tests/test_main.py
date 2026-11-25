@@ -120,3 +120,19 @@ def test_auto_fall_after_game_over():
   assert game.current_row == 0
   plt.close(fig)
 
+
+def test_update_game_updates_animation_interval():
+    game = TetrisGame()
+    game.drop_interval = 450
+
+    fig, ax = plt.subplots()
+
+    animation = SimpleNamespace(
+        event_source=SimpleNamespace(interval=500)
+    )
+
+    update_game(game, ax, animation)
+
+    assert animation.event_source.interval == 450
+
+    plt.close(fig)
