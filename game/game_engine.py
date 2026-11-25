@@ -12,13 +12,16 @@ class TetrisGame:
     self.score = 0
     self.is_game_over = False
 
+    self.upcoming_tetromino = Tetromino(random.choice(list(TETROMINOS.keys())))
+    
     #create the first tetromino
     self.spawn_tetromino()
 
   def spawn_tetromino(self):
     #randomly select from one of the seven
-    tetromino_id = random.choice(list(TETROMINOS.keys()))
-    self.active_tetromino = Tetromino(tetromino_id)
+    self.active_tetromino = self.upcoming_tetromino
+
+    self.upcoming_tetromino = Tetromino(random.choice(list(TETROMINOS.keys())))
 
     #position the tetromino top of board
     self.current_row = 0
