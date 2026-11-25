@@ -49,7 +49,10 @@ def draw_game(game, ax=None):
   ax.set_xticks([])
   ax.set_yticks([])
 
-  ax.set_title(f"Lines Cleared: {game.total_lines_cleared}", fontsize=14)
+  if game.is_game_over:
+    ax.set_title("GAME OVER", fontsize=18, color="red")
+  else:
+    ax.set_title(f"Lines Cleared: {game.total_lines_cleared}", fontsize=14)
 
   ax.set_aspect("equal")
 
