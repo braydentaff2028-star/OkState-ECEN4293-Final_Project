@@ -73,4 +73,4 @@ class TetrisGame:
   def hard_drop(self):
     while is_valid(self.board, self.active_tetromino.shape, self.current_row + 1, self.current_col):
       self.current_row += 1
-    self.lock_tetromino
+    self.lock_tetromino()
