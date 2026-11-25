@@ -160,7 +160,7 @@ def test_upcoming_to_active():
   assert game.active_tetromino is upcoming
 
 
-def test_upcoming_is_selected():
+def test_upcoming_is_selected(monkeypatch):
   game = TetrisGame()
   monkeypatch.setattr("game.game_engine.random.choice", lambda options: 2)
 
