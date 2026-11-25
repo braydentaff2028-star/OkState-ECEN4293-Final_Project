@@ -38,6 +38,13 @@ def handle_keypress(event, game, ax, mode="human"):
 
 def update_game(game, ax, animation=None, mode="human", strategy="Random", menu_button=None):
   if game.is_game_over:
+    if menu_button is not None:
+        menu_button.ax.set_visible(True)
+
+    if animation is not None:
+        animation.event_source.stop()
+
+    ax.figure.canvas.draw_idle()
     return
 
   if mode == "automated":
@@ -46,6 +53,16 @@ def update_game(game, ax, animation=None, mode="human", strategy="Random", menu_
     game.move_down()
   draw_game(game, ax)
   ax.figure.canvas.draw_idle()
+    
+  if game.is_game_over:
+    if menu_button is not None:
+        menu_button.ax.set_visible(True)
+
+    if animation is not None:
+        animation.event_source.stop()
+
+    ax.figure.canvas.draw_idle()
+    return
 
   if animation is not None:
         animation.event_source.interval = game.drop_interval
@@ -84,7 +101,8 @@ def launch_game(mode, strategy):
       ax,
       animation,
       mode,
-      strategy
+      strategy,
+      menu_button
     ),
     interval=game.drop_interval
   )
