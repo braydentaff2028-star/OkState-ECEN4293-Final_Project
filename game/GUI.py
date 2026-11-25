@@ -13,11 +13,31 @@ TETROMINO_COLORS = [
   "orange"
 ]
 
+
+def draw_next_tetromino(game, ax):
+  ax.clear()
+
+  tetromino = game.upcoming_tetromino.shape
+
+  color_map = ListedColormap(TETROMINOS_COLORS)
+
+  ax.imshow(tetromino, cmap=color_map, vmin=0, vmax=7)
+
+  ax.set_title("NEXT", fontsize=14)
+
+  ax.set_xticks([])
+  ax.set_yticks([])
+
+  ax.set_aspect("equal")
+
+
 def draw_game(game, ax=None):
   if ax is None:
-    fig, ax = plt.subplots(figsize=(6, 10))
+    fig, (ax, preview_ax) = plt.subplots(1, 2, figsize=(8, 10), gridspec_kw={"width_ratios": [3, 1]})
+    fig.preview_ax = preview_ax
   else:
     fig = ax.figure
+    preview_ax = fig._preview_ax
 
   display_board = game.board.copy()
 
@@ -57,4 +77,5 @@ def draw_game(game, ax=None):
   ax.set_aspect("equal")
 
   fig.tight_layout()
+  draw_next_tetromino(game, preview_ax)
   return fig, ax
